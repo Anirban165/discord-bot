@@ -13,13 +13,17 @@ client.on('ready', () => {
 });
 
 client.on('messageCreate',async (msg) => {
-  if (msg.author.bot) return; // ignore if msg is from bot
-  if (!msg.content?.startsWith('sudip')) return; // ignore if msg doesn't start with !
-  msg.react('👍');
-  let { data } = await axios.post(process.env.GPT_URL, {"prompt": msg.content })
-  data = data.split('\n')
-  console.log('\n', msg.content, '\n' ,JSON.parse(data[data.length - 1]).text, '\n')
-  return msg.reply(`${JSON.parse(data[data.length - 1]).text}`);
+  try {
+    if (msg.author.bot) return; // ignore if msg is from bot
+    if (!msg.content?.startsWith('sudip')) return; // ignore if msg doesn't start with !
+    msg.react('👍');
+    let { data } = await axios.post(process.env.GPT_URL, {"prompt": msg.content })
+    data = data.split('\n')
+    console.log('\n', msg.content, '\n' , JSON.parse(data[data.length - 1]).text, '\n')
+    return msg.reply(`${JSON.parse(data[data.length - 1]).text}`);
+  } catch (error) {
+    console.log(error)
+  }
 });
   
 client.login(process.env.BOT_TOKEN);
