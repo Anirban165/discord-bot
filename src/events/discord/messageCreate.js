@@ -28,6 +28,7 @@ exports.default = async (client, message) => {
     }else {
         if (!message.content?.toLowerCase().startsWith('sudip')) return;
         message.react('👍');
+        message.channel.sendTyping();
         let { data } = await axios.post(process.env.GPT_URL, {"prompt": message.content.replace('sudip', '')})
         data = data.split('\n');
         // console.log('\n', msg.content, '\n' , JSON.parse(data[data.length - 1]).text, '\n')
